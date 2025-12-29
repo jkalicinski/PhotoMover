@@ -3,7 +3,7 @@ using System.Text.RegularExpressions;
 using MetadataExtractor;
 using MetadataExtractor.Formats.Exif;
 
-var executablePath = AppDomain.CurrentDomain.BaseDirectory;
+var executablePath = AppDomain.CurrentDomain.BaseDirectory.TrimEnd(Path.DirectorySeparatorChar, Path.AltDirectorySeparatorChar);
 var parentDirectory = System.IO.Directory.GetParent(executablePath)?.FullName;
 
 if (parentDirectory == null)
@@ -12,6 +12,7 @@ if (parentDirectory == null)
     return;
 }
 
+executablePath = executablePath + Path.DirectorySeparatorChar;
 var errorDirectory = Path.Combine(executablePath, "Error");
 var photosDirectory = Path.Combine(parentDirectory, "Zdjecia");
 
