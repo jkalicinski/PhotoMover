@@ -48,6 +48,15 @@ PhotoMover.exe [sourceDirectory] [destinationDirectory]
 
 **Examples:**
 
+- **Show version**:
+  ```bash
+  PhotoMover.exe --version
+  ```
+  or
+  ```bash
+  PhotoMover.exe -v
+  ```
+
 - **Default behavior** (scans and organizes in current directory):
   ```bash
   PhotoMover.exe

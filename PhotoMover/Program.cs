@@ -1,7 +1,18 @@
 ﻿using System.Globalization;
+using System.Reflection;
 using System.Text.RegularExpressions;
 using MetadataExtractor;
 using MetadataExtractor.Formats.Exif;
+
+if (args.Length > 0 && (args[0] == "--version" || args[0] == "-v"))
+{
+    var version = Assembly.GetExecutingAssembly().GetName().Version;
+    var informationalVersion = Assembly.GetExecutingAssembly()
+        .GetCustomAttribute<AssemblyInformationalVersionAttribute>()?.
+        InformationalVersion ?? version?.ToString() ?? "Unknown";
+    Console.WriteLine($"PhotoMover v{informationalVersion}");
+    return;
+}
 
 string sourceDirectory;
 string destinationDirectory;
