@@ -36,7 +36,7 @@ PhotoMover is a C# console application (.NET 10) that automatically organizes yo
 
 1. Copy the executable `PhotoMover.exe` to the directory containing files to organize
 2. Run the application
-3. The program will automatically move files to the structure `../Zdjecia/year/month/day/`
+3. The program will automatically move files to the structure `year/month/day/` within the same directory
 
 ### Advanced usage (with parameters)
 
@@ -48,24 +48,27 @@ PhotoMover.exe [sourceDirectory] [destinationDirectory]
 
 **Examples:**
 
-- **Default behavior** (scans current directory):
+- **Default behavior** (scans and organizes in current directory):
   ```bash
   PhotoMover.exe
   ```
+  Files will be organized in the same directory as the executable.
 
-- **Custom source directory** (destination will be `[parent]/Zdjecia`):
+- **Custom source directory** (organizes files within the same directory):
   ```bash
   PhotoMover.exe "C:\Photos\Unsorted"
   ```
+  Files will be organized within `C:\Photos\Unsorted\year\month\day\`
 
 - **Custom source and destination directories**:
   ```bash
   PhotoMover.exe "C:\Photos\Unsorted" "D:\Organized\Photos"
   ```
+  Files from `C:\Photos\Unsorted` will be organized into `D:\Organized\Photos\year\month\day\`
 
 **Parameters:**
 - `sourceDirectory` (optional) - Directory to scan for photos and videos. If not provided, uses the application's directory.
-- `destinationDirectory` (optional) - Root directory where organized files will be moved. If not provided, uses `Zdjecia` folder in the parent of the source directory.
+- `destinationDirectory` (optional) - Root directory where organized files will be moved. If not provided, uses the same directory as the source.
 
 ## 🛠️ Requirements
 

@@ -26,13 +26,7 @@ if (args.Length >= 2 && !string.IsNullOrWhiteSpace(args[1]))
 }
 else
 {
-    var parentDirectory = System.IO.Directory.GetParent(sourceDirectory)?.FullName;
-    if (parentDirectory == null)
-    {
-        Console.WriteLine("Unable to determine parent directory.");
-        return;
-    }
-    destinationDirectory = Path.Combine(parentDirectory, "Zdjecia");
+    destinationDirectory = sourceDirectory;
 }
 
 var executablePath = sourceDirectory + Path.DirectorySeparatorChar;
