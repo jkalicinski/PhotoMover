@@ -1,48 +1,79 @@
 ﻿# PhotoMover 📸
 
-Automatyczne sortowanie zdjęć i filmów według daty do uporządkowanej struktury katalogów.
+Automatic photo and video organizer that sorts files by date into an organized directory structure.
 
-## 📋 Opis
+## 📋 Description
 
-PhotoMover to aplikacja konsolowa w C# (.NET 10), która automatycznie organizuje Twoje zdjęcia i filmy według daty. Program skanuje katalog, w którym się znajduje, wykrywa daty z nazw plików lub metadanych EXIF i przenosi pliki do struktury katalogów `Zdjecia/rok/miesiąc/dzień`.
+PhotoMover is a C# console application (.NET 10) that automatically organizes your photos and videos by date. The program scans a directory, detects dates from file names or EXIF metadata, and moves files into a structured directory hierarchy `Photos/year/month/day`.
 
-## ✨ Funkcjonalności
+## ✨ Features
 
-- **🔍 Wykrywanie dat z nazw plików** - obsługuje wiele formatów:
+- **🔍 Date detection from file names** - supports multiple formats:
   - `YYYY-MM-DD`, `YYYY_MM_DD`, `YYYY.MM.DD`
   - `YYYYMMDD`
   - `DD-MM-YYYY`, `DD_MM_YYYY`, `DD.MM.YYYY`
   - `DDMMYYYY`
-  - `DD-MM-YY`, `MM-DD-YY` (z automatycznym określeniem wieku)
+  - `DD-MM-YY`, `MM-DD-YY` (with automatic century detection)
 
-- **📷 Odczyt metadanych EXIF** - dla plików graficznych bez daty w nazwie sprawdza:
+- **📷 EXIF metadata reading** - for image files without a date in the filename, checks:
   - DateTimeOriginal
   - DateTimeDigitized
   - DateTime
 
-- **🎬 Obsługa wielu formatów**
-  - **Zdjęcia**: `.jpg`, `.jpeg`, `.png`, `.gif`, `.bmp`, `.tiff`, `.tif`, `.webp`, `.heic`, `.heif`, `.raw`, `.cr2`, `.nef`, `.arw`, `.dng`
-  - **Filmy**: `.mp4`, `.avi`, `.mov`, `.wmv`, `.mkv`, `.flv`, `.webm`, `.m4v`, `.mpg`, `.mpeg`, `.3gp`, `.mts`, `.m2ts`
+- **🎬 Support for multiple formats**
+  - **Images**: `.jpg`, `.jpeg`, `.png`, `.gif`, `.bmp`, `.tiff`, `.tif`, `.webp`, `.heic`, `.heif`, `.raw`, `.cr2`, `.nef`, `.arw`, `.dng`
+  - **Videos**: `.mp4`, `.avi`, `.mov`, `.wmv`, `.mkv`, `.flv`, `.webm`, `.m4v`, `.mpg`, `.mpeg`, `.3gp`, `.mts`, `.m2ts`
 
-- **📁 Automatyczna organizacja**
+- **📁 Automatic organization** - files are sorted into `year/month/day` directory structure
 
-- **🔄 Obsługa duplikatów** - jeśli plik o takiej nazwie już istnieje, dodaje `_1`, `_2`, itd.
+- **🔄 Duplicate handling** - if a file with the same name exists, appends `_1`, `_2`, etc.
 
-- **⚠️ Folder Error** - pliki bez rozpoznanej daty trafiają do folderu `Error` w katalogu roboczym
+- **⚠️ Error folder** - files without a recognized date are moved to the `Error` folder in the source directory
 
-## 🚀 Użycie
+## 🚀 Usage
 
-1. Skopiuj plik wykonywalny `PhotoMover.exe` do katalogu z plikami do posortowania
-2. Uruchom aplikację
-3. Program automatycznie przeniesie pliki do struktury `../Zdjecia/rok/miesiąc/dzień/`
+### Basic usage (default behavior)
 
-## 🛠️ Wymagania
+1. Copy the executable `PhotoMover.exe` to the directory containing files to organize
+2. Run the application
+3. The program will automatically move files to the structure `../Zdjecia/year/month/day/`
+
+### Advanced usage (with parameters)
+
+You can optionally specify source and/or destination directories as command-line arguments:
+
+```bash
+PhotoMover.exe [sourceDirectory] [destinationDirectory]
+```
+
+**Examples:**
+
+- **Default behavior** (scans current directory):
+  ```bash
+  PhotoMover.exe
+  ```
+
+- **Custom source directory** (destination will be `[parent]/Zdjecia`):
+  ```bash
+  PhotoMover.exe "C:\Photos\Unsorted"
+  ```
+
+- **Custom source and destination directories**:
+  ```bash
+  PhotoMover.exe "C:\Photos\Unsorted" "D:\Organized\Photos"
+  ```
+
+**Parameters:**
+- `sourceDirectory` (optional) - Directory to scan for photos and videos. If not provided, uses the application's directory.
+- `destinationDirectory` (optional) - Root directory where organized files will be moved. If not provided, uses `Zdjecia` folder in the parent of the source directory.
+
+## 🛠️ Requirements
 
 - .NET 10 Runtime
 
-## 📦 Zależności
+## 📦 Dependencies
 
-- [MetadataExtractor](https://github.com/drewnoakes/metadata-extractor-dotnet) - do odczytu metadanych EXIF
+- [MetadataExtractor](https://github.com/drewnoakes/metadata-extractor-dotnet) - for reading EXIF metadata
 
 ## 📝 Licencja
 

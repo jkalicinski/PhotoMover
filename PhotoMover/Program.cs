@@ -3,21 +3,44 @@ using System.Text.RegularExpressions;
 using MetadataExtractor;
 using MetadataExtractor.Formats.Exif;
 
-var executablePath = AppDomain.CurrentDomain.BaseDirectory.TrimEnd(Path.DirectorySeparatorChar, Path.AltDirectorySeparatorChar);
-var parentDirectory = System.IO.Directory.GetParent(executablePath)?.FullName;
+string sourceDirectory;
+string destinationDirectory;
 
-if (parentDirectory == null)
+if (args.Length >= 1 && !string.IsNullOrWhiteSpace(args[0]))
 {
-    Console.WriteLine("Nie można określić katalogu nadrzędnego.");
-    return;
+    sourceDirectory = Path.GetFullPath(args[0]);
+    if (!System.IO.Directory.Exists(sourceDirectory))
+    {
+        Console.WriteLine($"Katalog źródłowy nie istnieje: {sourceDirectory}");
+        return;
+    }
+}
+else
+{
+    sourceDirectory = AppDomain.CurrentDomain.BaseDirectory.TrimEnd(Path.DirectorySeparatorChar, Path.AltDirectorySeparatorChar);
 }
 
-executablePath = executablePath + Path.DirectorySeparatorChar;
-var errorDirectory = Path.Combine(executablePath, "Error");
-var photosDirectory = Path.Combine(parentDirectory, "Zdjecia");
+if (args.Length >= 2 && !string.IsNullOrWhiteSpace(args[1]))
+{
+    destinationDirectory = Path.GetFullPath(args[1]);
+}
+else
+{
+    var parentDirectory = System.IO.Directory.GetParent(sourceDirectory)?.FullName;
+    if (parentDirectory == null)
+    {
+        Console.WriteLine("Nie można określić katalogu nadrzędnego.");
+        return;
+    }
+    destinationDirectory = Path.Combine(parentDirectory, "Zdjecia");
+}
 
-Console.WriteLine($"Katalog roboczy: {executablePath}");
-Console.WriteLine($"Katalog Zdjecia: {photosDirectory}");
+var executablePath = sourceDirectory + Path.DirectorySeparatorChar;
+var errorDirectory = Path.Combine(executablePath, "Error");
+var photosDirectory = destinationDirectory;
+
+Console.WriteLine($"Katalog źródłowy: {sourceDirectory}");
+Console.WriteLine($"Katalog docelowy: {photosDirectory}");
 Console.WriteLine($"Katalog Error: {errorDirectory}");
 Console.WriteLine();
 
@@ -77,7 +100,7 @@ foreach (var file in files)
         try
         {
             File.Move(file, targetPath);
-            Console.WriteLine($"  → Przeniesiono do: {Path.GetRelativePath(parentDirectory, targetPath)}");
+            Console.WriteLine($"  → Przeniesiono do: {Path.GetRelativePath(sourceDirectory, targetPath)}");
             processedCount++;
         }
         catch (Exception ex)
