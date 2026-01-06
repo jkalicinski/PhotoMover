@@ -11,7 +11,7 @@ if (args.Length >= 1 && !string.IsNullOrWhiteSpace(args[0]))
     sourceDirectory = Path.GetFullPath(args[0]);
     if (!System.IO.Directory.Exists(sourceDirectory))
     {
-        Console.WriteLine($"Katalog źródłowy nie istnieje: {sourceDirectory}");
+        Console.WriteLine($"Source directory does not exist: {sourceDirectory}");
         return;
     }
 }
@@ -29,7 +29,7 @@ else
     var parentDirectory = System.IO.Directory.GetParent(sourceDirectory)?.FullName;
     if (parentDirectory == null)
     {
-        Console.WriteLine("Nie można określić katalogu nadrzędnego.");
+        Console.WriteLine("Unable to determine parent directory.");
         return;
     }
     destinationDirectory = Path.Combine(parentDirectory, "Zdjecia");
@@ -39,9 +39,9 @@ var executablePath = sourceDirectory + Path.DirectorySeparatorChar;
 var errorDirectory = Path.Combine(executablePath, "Error");
 var photosDirectory = destinationDirectory;
 
-Console.WriteLine($"Katalog źródłowy: {sourceDirectory}");
-Console.WriteLine($"Katalog docelowy: {photosDirectory}");
-Console.WriteLine($"Katalog Error: {errorDirectory}");
+Console.WriteLine($"Source directory: {sourceDirectory}");
+Console.WriteLine($"Destination directory: {photosDirectory}");
+Console.WriteLine($"Error directory: {errorDirectory}");
 Console.WriteLine();
 
 var imageExtensions = new HashSet<string>
@@ -75,7 +75,7 @@ foreach (var file in files)
         continue;
     }
 
-    Console.WriteLine($"Przetwarzanie: {fileName}");
+    Console.WriteLine($"Processing: {fileName}");
 
     DateTime? fileDate = null;
 
@@ -100,12 +100,12 @@ foreach (var file in files)
         try
         {
             File.Move(file, targetPath);
-            Console.WriteLine($"  → Przeniesiono do: {Path.GetRelativePath(sourceDirectory, targetPath)}");
+            Console.WriteLine($"  → Moved to: {Path.GetRelativePath(sourceDirectory, targetPath)}");
             processedCount++;
         }
         catch (Exception ex)
         {
-            Console.WriteLine($"  ✗ Błąd przenoszenia: {ex.Message}");
+            Console.WriteLine($"  ✗ Move error: {ex.Message}");
             errorCount++;
         }
     }
@@ -117,18 +117,18 @@ foreach (var file in files)
         try
         {
             File.Move(file, targetPath);
-            Console.WriteLine($"  → Przeniesiono do Error (brak daty)");
+            Console.WriteLine($"  → Moved to Error (no date found)");
             errorCount++;
         }
         catch (Exception ex)
         {
-            Console.WriteLine($"  ✗ Błąd przenoszenia do Error: {ex.Message}");
+            Console.WriteLine($"  ✗ Error moving to Error folder: {ex.Message}");
         }
     }
 }
 
 Console.WriteLine();
-Console.WriteLine($"Zakończono. Przetworzone: {processedCount}, Błędy/Brak daty: {errorCount}, Pominięte (inne pliki): {skippedCount}");
+Console.WriteLine($"Completed. Processed: {processedCount}, Errors/No date: {errorCount}, Skipped (other files): {skippedCount}");
 
 static DateTime? TryExtractDateFromFileName(string fileName)
 {
